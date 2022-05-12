@@ -30,17 +30,20 @@ function Register(){
             confirmation:userData.confirmation
         }
 
-        const promise = axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, body)
-        promise.then(()=>{
-            setUserData({...userData,name:"", email:"", password:"", confirm:""});
+        const promise = axios.post(`http://localhost:5000/sign-up`, body)
+        promise.then((response)=>{
+            const message = response.data
+            setUserData({...userData,name:"", email:"", password:"", confirmation:""});
+            alert(`${message}`);
             navigate("/");
             setIsLoading(false)
 
         })
         promise.catch((e) => {
-            setUserData({...userData,name:"", email:"", password:"", confirm:""});
+            const message = e.response.data
+            setUserData({...userData,name:"", email:"", password:"", confirmation:""});
             setIsLoading(false)
-            alert("Dados inválidos");
+            alert(`Dados inválidos: ${message}`);
         })
     }
 
