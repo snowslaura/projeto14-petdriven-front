@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom";
-import {useContext} from "react"
+import {useContext, useState} from "react"
 import axios from "axios"
 import user from "./../../assets/img/user.png"
 import email from "./../../assets/img/email.png"
@@ -14,6 +14,8 @@ function Register(){
 
     const{userData, setUserData} = useContext(UsuarioContext)
     const {isLoading, setIsLoading} = useContext(isLoadingContext)
+
+    const[showTip, setShowTip]= useState(false);
 
     const navigate = useNavigate();
 
@@ -41,6 +43,11 @@ function Register(){
             alert("Dados inválidos");
         })
     }
+
+    function showTipBelow(){
+        setShowTip(!showTip)
+    }
+
     return(
     <Container> 
         <Logo>Petdriven</Logo>
@@ -76,12 +83,15 @@ function Register(){
             </InputIcone>
             <InputIcone>
                 <img src={padlock} alt="user-icon"></img>
-                <input type="password" id="password" placeholder="Senha"  value={userData.password} onChange={(e)=> setUserData({...userData, password:e.target.value})} />
+                <input onClick={showTipBelow} type="password" id="password" placeholder="Senha*"  value={userData.password} onChange={(e)=> setUserData({...userData, password:e.target.value})} />
             </InputIcone>
             <InputIcone>
                 <img src={padlock} alt="user-icon"></img>
                 <input type="password" id="confirmation" placeholder="Confirme a senha"  value={userData.confirmation} onChange={(e)=> setUserData({...userData, confirmation:e.target.value})} />
             </InputIcone>
+            {!showTip?"":
+                <Warn><span>*Deve ser alfanumérica e deve conter</span> <span> no mínimo 6 dígitos e no máximo 12</span></Warn>}
+
             <button type="submit">Registrar</button>  
         </form> } 
         <Link to="/"><Enter>Já tem uma conta? Entre agora!</Enter></Link>         
@@ -133,6 +143,7 @@ const InputIcone = styled.div`
             width: 100%;
             height: 100%;
             border: none;
+            cursor: pointer;
             background-color: ${props => props.isLoading===true?"#beb3b3":"#FFF"}; 
             ::placeholder {
                         color:#015584;
@@ -142,6 +153,15 @@ const InputIcone = styled.div`
                         line-height: 23px;                        
             };     
         }
+`
+
+const Warn = styled.p`
+    font-size: 12px;
+    margin-bottom: 13px;
+    color:  #015584;    
+    span{
+        display:block;        
+    }
 `
 
 const Container = styled.div`
