@@ -29,13 +29,15 @@ function Login(){
         }
 
         const promise = axios.post(`http://localhost:5000/`, body)
-        promise.then(()=>{
-            setUserData({...userData, email:"", password:""});            
+        promise.then(({data})=>{
+            setUserData({...userData, email:"", password:""});  
+            const serializedDataString = JSON.stringify({token: data.token, name:data.name})            
+            localStorage.setItem("userData", serializedDataString)          
             alert("Login efetuado com sucesso!");
             navigate("/home");
             setIsLoading(false)
-
         })
+        
         promise.catch((e) => {
             const message = e.response.data
             setUserData({...userData,email:"", password:""});
