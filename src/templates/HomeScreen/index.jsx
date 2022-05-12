@@ -1,8 +1,13 @@
 import styled from "styled-components";
 
-import Header from "../../components/header";
-import Footer from "../../components/footer";
-import Product from "../../components/products";
+import Header from "./../../components/header";
+import Footer from "./../../components/footer";
+import Product from "./../../components/products";
+
+import Food from "./../../assets/images/food.jpg";
+import Antpulga from "./../../assets/images/antpulga.jpg";
+import Houses from "./../../assets/images/house.jpg";
+import Med from "./../../assets/images/med.jpg";
 
 function Home() {
   return (
@@ -10,10 +15,18 @@ function Home() {
       <Header />
       <Main>
         <DivNav>
-          <DivFilter></DivFilter>
-          <DivFilter></DivFilter>
-          <DivFilter></DivFilter>
-          <DivFilter></DivFilter>
+          <DivFilter>
+            <img src={Food} alt="Comida para animais" />
+          </DivFilter>
+          <DivFilter>
+            <img src={Antpulga} alt="Anti-pulgas" />
+          </DivFilter>
+          <DivFilter>
+            <img src={Med} alt="Medicamento para animais" />
+          </DivFilter>
+          <DivFilter>
+            <img src={Houses} alt="Casinha para animais" />
+          </DivFilter>
         </DivNav>
         <DivGuide>
           <h1>Todos os produtos</h1>
@@ -44,25 +57,30 @@ export const Main = styled.main`
 `;
 
 export const DivNav = styled.div`
-  width: 335px;
+  width: 355px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 24px;
+  margin-left: 14px;
   margin-top: 100px;
 `;
 
 export const DivFilter = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   border: solid 1px #989898;
   border-radius: 30%;
-  margin: 0 18px;
+  margin: 0 10px;
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 export const DivGuide = styled.div`
@@ -93,10 +111,9 @@ export const DivGuide = styled.div`
 
 export const DivProducts = styled.div`
   width: 375px;
-  height: 70px;
+  height: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
 `;
