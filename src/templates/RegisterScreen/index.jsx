@@ -5,6 +5,7 @@ import axios from "axios"
 import user from "./../../assets/img/user.png"
 import email from "./../../assets/img/email.png"
 import padlock from "./../../assets/img/padlock.png"
+import pawprint from "./../../assets/img/pawprint.svg"
 import {Oval} from 'react-loader-spinner';
 
 import UsuarioContext from "./../../contexts/UserContext";
@@ -32,9 +33,8 @@ function Register(){
 
         const promise = axios.post(`http://localhost:5000/sign-up`, body)
         promise.then((response)=>{
-            const message = response.data
             setUserData({...userData,name:"", email:"", password:"", confirmation:""});
-            alert(`${message}`);
+            alert("Registro efetuado com sucesso");
             navigate("/");
             setIsLoading(false)
 
@@ -131,6 +131,7 @@ const InputIcone = styled.div`
     border-radius: 15px;
     margin-bottom: 13px;
     font-style: normal;
+    border: 2.5px dotted #FFAD32;
     font-weight: 400;
     font-size: 20px;
     line-height: 23px;
@@ -172,9 +173,14 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;  
-    width: 100vw;
-    height: 100vh;
-    background-color: #FFAD32;
+    margin-top: 150px;  
+    width: 350px;
+    height: 350px;
+    background-image: url(${pawprint}) ;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    
 
    form{
         display: flex;
