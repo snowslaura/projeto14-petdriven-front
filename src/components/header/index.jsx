@@ -3,7 +3,7 @@ import UsuarioContext from "./../../contexts/UserContext";
 
 import styled from "styled-components";
 
-import Imagem from "./../../assets/images/doglogo.jpg";
+import Imagem from "./../../assets/images/doglogo.png";
 
 function Header() {
   return (
@@ -65,6 +65,7 @@ const Left = styled.div`
     width: 51px;
     heighr: 51px;
     border-radius: 5px;
+    margin-bottom: 5px;
   }
 `;
 

@@ -1,15 +1,30 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import Header from "./../../components/header";
 import Footer from "./../../components/footer";
 import Product from "./../../components/products";
 
-import Food from "./../../assets/images/food.jpg";
-import Antpulga from "./../../assets/images/antpulga.jpg";
-import Houses from "./../../assets/images/house.jpg";
-import Med from "./../../assets/images/med.jpg";
+import Food from "./../../assets/images/food.png";
+import Antpulga from "./../../assets/images/antpulga.png";
+import Houses from "./../../assets/images/house.png";
+import Med from "./../../assets/images/med.png";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const promise = axios.get("http://localhost:5000/home");
+
+    promise.then((response) => {
+      const { data } = response;
+      setProducts(data);
+    });
+    promise.catch((err) => console.log(err.response));
+  }, []);
+
   return (
     <>
       <Header />
@@ -33,14 +48,19 @@ function Home() {
           <p>Veja todos</p>
         </DivGuide>
         <DivProducts>
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
+          {products.map((product) => {
+            const { id, name, price, type, image, description } = product;
+            return (
+              <Link to={`/product/${id}`}>
+                <Product key={id+name}
+                  name={name}
+                  price={price}
+                  type={type}
+                  image={image}
+                />
+              </Link>
+            );
+          })}
         </DivProducts>
       </Main>
       <Footer />
@@ -54,6 +74,7 @@ export const Main = styled.main`
   width: 375px;
   height: 810px;
   margin-top: 70px;
+  margin-bottom: 70px;
 `;
 
 export const DivNav = styled.div`
@@ -78,8 +99,8 @@ export const DivFilter = styled.div`
   margin: 0 10px;
 
   img {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
   }
 `;
 
@@ -114,6 +135,4 @@ export const DivProducts = styled.div`
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
 `;
