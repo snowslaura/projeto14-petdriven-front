@@ -1,6 +1,8 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 function Product(props) {
+  const [typelist, setTypelist] = useState([]);
   const { name, image, type, price } = props;
   return (
     <>
