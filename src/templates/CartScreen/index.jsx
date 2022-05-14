@@ -1,38 +1,42 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import {AiOutlineShoppingCart, AiFillMinusCircle} from "react-icons/ai"
 import {BsFillPlusCircleFill} from "react-icons/bs"
+import {BsFillBagXFill} from "react-icons/bs"
 import {IoChevronBack} from "react-icons/io5"
-import { useNavigate } from "react-router-dom"
+import {Oval} from "react-loader-spinner"
 
 export default function Cart() {
   const [products, setProducts] = useState([])
   const [productInfo, setProductInfo] = useState([])
   const [update, setUpdate] = useState(true)
   const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const userDataLocalStorage = localStorage.getItem("userData")
+  const unserializedData = JSON.parse(userDataLocalStorage)
+  const tokenStorage = unserializedData.token
 
   useEffect(() =>{
+    setUpdate(true)
     if(update){
     axios
     .get("http://localhost:5000/cart",{
       headers: {
-        Authorization: "Bearer 60e7b053-147f-4773-921e-8ee5d46e4f4f"
+        Authorization: `Bearer ${tokenStorage}`
       }
     })
     .then(response => {
+      if(response.length === 0) return
       setProducts(() => response.data)
     })
     .catch((e) => {
       console.log(e)
     })
-    setUpdate(false)
+    setUpdate(true)
   }
-  else{
-    console.log("aa")
-  }
-
   },[update])
 
   useEffect(() => {
@@ -57,10 +61,11 @@ export default function Cart() {
     setTotal(0)
     productInfo.forEach((product) => {
       const subTotal = parseFloat(product.price) * parseFloat(product.quantity)
-      console.log(productInfo)
       setTotal((prev) => parseFloat(prev) + parseFloat(subTotal))
     })
   },[productInfo])
+
+  setTimeout(() => setLoading(false), 1500)
 
   return (
     <CartDiv>
@@ -70,7 +75,11 @@ export default function Cart() {
         <AiOutlineShoppingCart/>
       </Header>
       <ProductList>
-        {productInfo.map((data, index) => 
+        {loading ?<Loading>
+          <Oval ariaLabel="loading-indicator" height={100} width={100} strokeWidth={5} color="#FFAD32" secondaryColor="#05A0F8"/>
+        </Loading> 
+        : productInfo.length > 0 ?
+        productInfo.map((data, index) => 
           <Product key={index}>
             <img src={data.image} alt="product"></img>
             <Information>
@@ -83,30 +92,33 @@ export default function Cart() {
               <h1 onClick={() => AddProduct(data._id)}><BsFillPlusCircleFill/></h1>
             </Buttons>
           </Product>
-        )}
+        ): <NotFoundProducts>
+          <BsFillBagXFill/>
+        <p>Não achamos nenhum produto no carrinho! <br/> Volte para comprar algo para seu pet!!</p>
+        </NotFoundProducts>}
       </ProductList>
       <Checkout>
         <Total>
           <p>Total: </p>
           <p>R$ {parseFloat(total).toFixed(2)}</p>
         </Total>
-          <button onClick={() => navigate("/checkout")}>Finalizar Compra</button>
+        {productInfo.length > 0 ? <button onClick={() => navigate("/checkout")}>Finalizar Compra</button> : <button disabled  onClick={() => navigate("/checkout")}>Adicione Produtos!</button>}
       </Checkout>
     </CartDiv>
   )
 
   function DeleteProduct(id){
     axios.delete(`http://localhost:5000/cart/${id}`)
-    setProducts(() => [])
     setProductInfo(() => [])
-    setUpdate(() => true)
+    setUpdate(() => false)
+    setLoading(() => true)
   }
 
   function AddProduct(id){
     axios.post(`http://localhost:5000/cart/${id}`,)
-    setProducts(() => [])
     setProductInfo(() => [])
-    setUpdate(() => true)
+    setUpdate(() => false)
+    setLoading(() => true)
     }
 
   
@@ -176,6 +188,14 @@ const Information = styled.div`
   justify-content: space-between;
 `
 
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 100px;
+  align-items: center;
+  justify-content: center;
+`
+
 const Buttons = styled.div`
   display: flex;
   height: 20%;
@@ -191,6 +211,21 @@ const Buttons = styled.div`
 
   p{
     margin: 0 10px;
+  }
+`
+
+const NotFoundProducts = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 100px;
+  align-items: center;
+  justify-content: center;
+  color: orange;
+  text-align: center;
+  p{
+    font-size: 15px;
+    color: black;
+    margin-top: 10px;
   }
 `
 
@@ -223,7 +258,7 @@ const Checkout = styled.div`
    width: 85%;
    height: 40px;
    border-radius: 5px;
-   margin-bottom: 10px;
+   margin-bottom: 20px;
    background-color: #05A0F8;
    color: #ffffff;
    border: 0;

@@ -2,14 +2,21 @@ import axios from "axios"
 import {GiConfirmed} from "react-icons/gi"
 import { useEffect } from "react"
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
 
 export default function Checkout() {
+  const navigate = useNavigate()
+  const userDataLocalStorage = localStorage.getItem("userData")
+  const unserializedData = JSON.parse(userDataLocalStorage)
+  const tokenStorage = unserializedData.token
 
   useEffect(() => {
     axios
-    .delete("http://localhost:5000/checkout")
-    .then()
-    .catch(alert("Erro ao finalizar a compra"))
+    .delete("http://localhost:5000/checkout",{
+        headers: {
+          Authorization: `Bearer ${tokenStorage}`
+        }
+      })
   },[])
 
   return (
@@ -19,7 +26,7 @@ export default function Checkout() {
         <h1>Compra finalizada!!!</h1>
       </ConfirmedPurchase>
       <ButtonMenu>
-        <button>Voltar ao Menu</button>
+        <button onClick={() => navigate("/home")}>Voltar ao Menu</button>
       </ButtonMenu>
     </>
   )
