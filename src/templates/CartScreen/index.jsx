@@ -4,12 +4,14 @@ import styled from "styled-components"
 import {AiOutlineShoppingCart, AiFillMinusCircle} from "react-icons/ai"
 import {BsFillPlusCircleFill} from "react-icons/bs"
 import {IoChevronBack} from "react-icons/io5"
+import { useNavigate } from "react-router-dom"
 
 export default function Cart() {
   const [products, setProducts] = useState([])
   const [productInfo, setProductInfo] = useState([])
   const [update, setUpdate] = useState(true)
   const [total, setTotal] = useState(0)
+  const navigate = useNavigate()
 
   useEffect(() =>{
     if(update){
@@ -63,7 +65,7 @@ export default function Cart() {
   return (
     <CartDiv>
       <Header>
-        <IoChevronBack/>
+        <IoChevronBack onClick={() => navigate("/home")}/>
         <Title> Meu carrinho  </Title>
         <AiOutlineShoppingCart/>
       </Header>
@@ -88,7 +90,7 @@ export default function Cart() {
           <p>Total: </p>
           <p>R$ {parseFloat(total).toFixed(2)}</p>
         </Total>
-          <button>Finalizar Compra</button>
+          <button onClick={() => navigate("/checkout")}>Finalizar Compra</button>
       </Checkout>
     </CartDiv>
   )
@@ -118,7 +120,7 @@ const Header = styled.div`
   align-items: center;
   margin: 0 10px;
   color: #015584;
-  font-size: 30px;
+  font-size: 40px;
 `
 
 const CartDiv = styled.div`
@@ -128,7 +130,7 @@ const CartDiv = styled.div`
 `
  
 const Title = styled.h1`
-  margin: 30px 0;
+  margin: 40px 0;
   text-align: center;
   font-weight: 700;
   font-size: 25px;
