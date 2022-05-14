@@ -17,7 +17,7 @@ export default function Checkout() {
           Authorization: `Bearer ${tokenStorage}`
         }
       })
-  },[])
+  },[tokenStorage])
 
   return (
     <>

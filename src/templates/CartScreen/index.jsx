@@ -37,7 +37,7 @@ export default function Cart() {
     })
     setUpdate(true)
   }
-  },[update])
+  },[update, tokenStorage])
 
   useEffect(() => {
     if(products.length === 0) return
