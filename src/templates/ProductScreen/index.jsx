@@ -1,19 +1,24 @@
 import styled from "styled-components"
 import {IoChevronBack} from "react-icons/io5"
+import {BsPiggyBank} from "react-icons/bs"
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import Tippy from '@tippyjs/react';
 
 function Product(){
 
     const {id} = useParams();
     const [product, setProduct] = useState({})
+    const [promotion, setPromotion] = useState(false)
 
     //const userDataLocalStorage = localStorage.getItem("userData")
     //const unserializedData = JSON.parse(userDataLocalStorage)
     //const tokenStorage = unserializedData.token
     
     useEffect( fetchProduct, [])
+
+    const navigate = useNavigate();
 
     function fetchProduct(){
         const config = {
@@ -24,6 +29,7 @@ function Product(){
     
         const promise = axios.get(`http://localhost:5000/product/${id}`, config)
         promise.then(({data})=>{
+            setPromotion(data.promotion)
             setProduct(data)
         })
         promise.catch((e)=>{
@@ -37,37 +43,43 @@ function Product(){
                 "Authorization": `Bearer 60e7b053-147f-4773-921e-8ee5d46e4f4f`
             }
         }
+       
 
-        const body = {
-            id
-        }
-
-        const promise = axios.post(`http://localhost:5000/product/${id}`, body, config)
+        const promise = axios.post(`http://localhost:5000/product/${id}`, config)
         promise.then(({data})=>{
-            setProduct(data)
+            alert(`${data}`)
+            navigate("/mycart")
         })
         promise.catch((e)=>{
             console.log(e)
         })
     
     }
+
+    function leavePage(){
+        setProduct({})
+        navigate("/home")
+    }
     
     return(
         <Container>
             <Header>
-                <IoChevronBack/>
-
+                <IoChevronBack onClick={leavePage}/>
+                {promotion?
+                <Tippy content="Esse produto está em promoção. Aproveite!" >
+                     <Promotion><BsPiggyBank/></Promotion>
+                </Tippy> :""}
             </Header>
             <img src={product.image} alt={product.name}></img>
             <Footer>
                 <div>
-                    <Name>
-                        {product.name}
-                    </Name>                    
-                    <Price>{product.price}</Price>
+                    <Tippy content={product.name} >
+                        <Name>{product.name}</Name>
+                    </Tippy> 
+                    <Price>R${product.price}</Price>
                 </div>
                 <Description>{product.description}</Description>
-                <button>Adicione ao carrinho</button>                
+                <button onClick={postProductCart}>Adicione ao carrinho</button>                
             </Footer>        
         </Container>
         
@@ -81,20 +93,32 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;  
-    margin-top: 80px;  
+    margin-top: 150px;  
 
     img{
-        height: 400px;
-        width: 400px;
+        height: 70%;
+        width: 70%;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
     }
+`
+const Promotion = styled.div`
+    color: green;
+    display: ${props => props.promotion===true?"flex":"hidden"};
+    justify-content: center;
+    width: 50px;
+    border-radius: 10px;;
 `
 
 const Header = styled.div`
     position:fixed;
-    top:20px;
-    left:20px;
-    color:#015584;
+    top:0px; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;       
+    color:#FFAD32;
     font-size: 40px;
+    padding: 20px;
 ` 
     
 const Footer = styled.footer`
@@ -111,7 +135,7 @@ const Footer = styled.footer`
 
     div{
         height: 30px;
-        width: 300px;
+        width: 80%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -133,30 +157,18 @@ const Footer = styled.footer`
         align-items: center;
         justify-content: center;
         cursor: pointer;        
-    }
-    .tooltip{
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-        position: absolute;
-        z-index: 1;
-    }
-    .tooltip:hover {
-        visibility: visible;
-    }
+    }   
 
 `
 
 const Name = styled.p`
    font-size:20px;
     color:  #015584; 
-    width:80%;
+    width:90%;
     height: 70%;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;  
 `
 
 const Price = styled.p`
@@ -167,8 +179,8 @@ const Price = styled.p`
 const Description = styled.p`
     font-size:15px;
     color: #015584;  
-    width: 300px;
-    height: 70px;
+    width: 80%;
+    height: 80px;
     overflow-y: scroll;
     word-break: break-word;
 `
