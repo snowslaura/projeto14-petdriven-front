@@ -1,9 +1,7 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 function Product(props) {
-  const [typelist, setTypelist] = useState([]);
-  const { name, image, type, price } = props;
+  const { name, image, price } = props;
   return (
     <>
       <Box>
@@ -14,7 +12,7 @@ function Product(props) {
           <h1>{name}</h1>
         </Legenda>
         <Price>
-          <p>R${price}</p>
+          <p>R$ {price}</p>
         </Price>
       </Box>
     </>
@@ -28,7 +26,7 @@ const Box = styled.div`
   height: 200px;
   display: flex;
   flex-direction: column;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin: 10px 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
@@ -40,7 +38,7 @@ const Image = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5px 5px;
+  margin: 10px 5px;
 
   img {
     width: 80px;
@@ -49,8 +47,8 @@ const Image = styled.div`
 `;
 
 const Legenda = styled.div`
-  width: 150px;
-  height: 50px;
+  width: 140px;
+  height: 45px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -64,6 +62,15 @@ const Legenda = styled.div`
     font-style: normal;
     line-height: 14.73px;
     color: #000000;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 8px;
+    margin-left: 3px;
+  }
+
+  h1:hover {
+    overflow: visible;
   }
 `;
 
@@ -81,6 +88,7 @@ const Price = styled.div`
     font-style: normal;
     line-height: 12.73px;
     color: #05a0f8;
-    margin-right: 40px;
+    margin-right: 32px;
+    text-decoration: none;
   }
 `;

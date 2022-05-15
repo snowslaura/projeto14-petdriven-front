@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import UsuarioContext from "./../../contexts/UserContext";
-
 import styled from "styled-components";
 
 import Imagem from "./../../assets/images/doglogo.png";
 
 function Header() {
+  const userDataLocalStorage = localStorage.getItem("userData");
+  const unserializedData = JSON.parse(userDataLocalStorage);
+  const nameStorage = unserializedData.name;
   return (
     <>
       <Top>
@@ -18,7 +18,7 @@ function Header() {
             <ion-icon name="person-outline"></ion-icon>
           </RightIcon>
           <RightName>
-            <h1>Olá Fulano</h1>
+            <h1>Olá, {nameStorage}</h1>
           </RightName>
         </Right>
       </Top>
@@ -54,7 +54,7 @@ const Left = styled.div`
   h1 {
     font-size: 38px;
     font-weight: 400;
-    font-family: 'Indie Flower', cursive;
+    font-family: "Indie Flower", cursive;
     font-style: normal;
     line-height: 16.73px;
     color: #ffffff;
@@ -73,7 +73,7 @@ const Right = styled.div`
   width: 90px;
   height: 40px;
   display: flex;
-  margin-right: 5px;
+  margin-right: 10px;
 `;
 
 const RightIcon = styled.div`

@@ -4,15 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 function Footer() {
+  const userDataLocalStorage = localStorage.getItem("userData")
+  const unserializedData = JSON.parse(userDataLocalStorage)
+  const tokenStorage = unserializedData.token
   const navigate = useNavigate();
   function logOut() {
     const config = {
       headers: {
-        Authorization: `Bearer `,
+        Authorization: `Bearer ${tokenStorage}`,
       },
     };
     const URL = "https://localhost:5000/home";
-    const promise = axios.put(URL, {}, config);
+    const body = {};
+    const promise = axios.put(URL, body, config);
     promise.then(() => {
       navigate("/");
     });

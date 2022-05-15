@@ -14,6 +14,8 @@ import Med from "./../../assets/images/med.png";
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const [filtro, setFiltro] = useState([]);
+  const [etapa, setEtapa] = useState("");
 
   useEffect(() => {
     const promise = axios.get("http://localhost:5000/home");
@@ -25,42 +27,72 @@ function Home() {
     promise.catch((err) => console.log(err.response));
   }, []);
 
+  useEffect(() => {
+    setFiltro([]);
+    products.forEach((product) => {
+      if (product.type === etapa) {
+        setFiltro((prev) => [...prev, product]);
+      }
+    });
+  }, [etapa, products]);
+
   return (
     <>
       <Header />
       <Main>
         <DivNav>
-          <DivFilter>
+          <DivFilter onClick={() => setEtapa("dog food")}>
             <img src={Food} alt="Comida para animais" />
           </DivFilter>
-          <DivFilter>
+          <DivFilter onClick={() => setEtapa("anti-flea")}>
             <img src={Antpulga} alt="Anti-pulgas" />
           </DivFilter>
-          <DivFilter>
+          <DivFilter onClick={() => setEtapa("medicine")}>
             <img src={Med} alt="Medicamento para animais" />
           </DivFilter>
-          <DivFilter>
+          <DivFilter onClick={() => setEtapa("dog house")}>
             <img src={Houses} alt="Casinha para animais" />
           </DivFilter>
         </DivNav>
+        <DivGuideNav>
+          <h1>Ração</h1>
+          <h2>Anti-pulgas </h2>
+          <h1>Medicamentos</h1>
+          <p>Casinhas</p>
+        </DivGuideNav>
         <DivGuide>
           <h1>Todos os produtos</h1>
-          <p>Veja todos</p>
+          <p onClick={() => setEtapa("")}>Veja todos</p>
         </DivGuide>
         <DivProducts>
-          {products.map((product) => {
-            const { id, name, price, type, image, description } = product;
-            return (
-              <Link to={`/product/${id}`}>
-                <Product key={id+name}
-                  name={name}
-                  price={price}
-                  type={type}
-                  image={image}
-                />
-              </Link>
-            );
-          })}
+          {etapa === ""
+            ? products.map((product) => {
+                const { id, name, price, type, image } = product;
+                return (
+                  <Link to={`/product/${id}`} key={id + name}>
+                    <Product
+                      name={name}
+                      price={price}
+                      type={type}
+                      image={image}
+                    />
+                  </Link>
+                );
+              })
+            : filtro.map((product) => {
+                const { id, name, price, type, image } = product;
+                return (
+                  <Link to={`/product/${id}`} key={id + name}>
+                    <Product
+                      name={name}
+                      price={price}
+                      type={type}
+                      image={image}
+                    />
+                  </Link>
+                );
+              })}
+          ;
         </DivProducts>
       </Main>
       <Footer />
@@ -99,14 +131,53 @@ export const DivFilter = styled.div`
   margin: 0 10px;
 
   img {
-    width: 55px;
-    height: 55px;
+    width: 45px;
+    height: 45px;
+  }
+`;
+
+export const DivGuideNav = styled.div`
+  width: 355px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-beetween;
+  margin-left: 14px;
+  margin-top: 10px;
+
+  h1 {
+    font-size: 10px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 12.73px;
+    color: #000000;
+    margin-left: 30px;
+    margin-right: 5px;
+  }
+
+  h2 {
+    font-size: 10px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 12.73px;
+    color: #000000;
+    margin-left: 40px;
+    margin-right: 5px;
+  }
+
+  p {
+    font-size: 10px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 12.73px;
+    color: #000000;
+    margin-left: 26px;
   }
 `;
 
 export const DivGuide = styled.div`
   width: 375px;
-  height: 70px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -135,4 +206,7 @@ export const DivProducts = styled.div`
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  text-decoration: none;
+  margin-left: 7px;
+  margin-bottom: 70px;
 `;
