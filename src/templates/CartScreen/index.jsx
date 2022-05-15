@@ -44,7 +44,7 @@ export default function Cart() {
     for(let product of products){
       const promise = axios.get(`http://localhost:5000/product/${product.idProduct}`,{
         headers: {
-          Authorization: "Bearer 60e7b053-147f-4773-921e-8ee5d46e4f4f"
+          Authorization: `Bearer ${tokenStorage}`
         }
       })
       promise.then((response) => {

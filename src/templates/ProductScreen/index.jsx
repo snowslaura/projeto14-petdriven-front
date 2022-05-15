@@ -44,7 +44,7 @@ function Product(){
             }
         }       
 
-        const promise = axios.post(`http://localhost:5000/product/${id}`, {}, config)
+        const promise = axios.post(`http://localhost:5000/product/${id}`,{}, config)
         promise.then(({data})=>{
             alert(`${data}`)
             navigate("/mycart")
