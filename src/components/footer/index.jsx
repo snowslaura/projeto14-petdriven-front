@@ -14,10 +14,11 @@ function Footer() {
         Authorization: `Bearer ${tokenStorage}`,
       },
     };
-    const URL = "https://localhost:5000/home";
+    const URL = "http://localhost:5000/home";
     const body = {};
     const promise = axios.put(URL, body, config);
     promise.then(() => {
+      localStorage.setItem("userData", "")
       navigate("/");
     });
     promise.catch((err) => console.log(err));

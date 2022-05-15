@@ -6,6 +6,8 @@ import {AiOutlineShoppingCart, AiFillMinusCircle} from "react-icons/ai"
 import {BsFillPlusCircleFill} from "react-icons/bs"
 import {BsFillBagXFill} from "react-icons/bs"
 import {IoChevronBack} from "react-icons/io5"
+import {FaMoneyBillAlt} from "react-icons/fa"
+import {BsFillCreditCardFill} from "react-icons/bs"
 import {Oval} from "react-loader-spinner"
 
 export default function Cart() {
@@ -14,6 +16,7 @@ export default function Cart() {
   const [update, setUpdate] = useState(true)
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [payment, setPayment] = useState("")
   const navigate = useNavigate()
   const userDataLocalStorage = localStorage.getItem("userData")
   const unserializedData = JSON.parse(userDataLocalStorage)
@@ -55,7 +58,7 @@ export default function Cart() {
         console.log(e)
       })
     }
-  },[products])
+  },[products,tokenStorage])
 
   useEffect(() => {
     setTotal(0)
@@ -97,12 +100,26 @@ export default function Cart() {
         <p>Não achamos nenhum produto no carrinho! <br/> Volte para comprar algo para seu pet!!</p>
         </NotFoundProducts>}
       </ProductList>
+      
       <Checkout>
+        <Payment>
+            <h1>Forma de pagamento</h1>
+            <div>
+              <FaMoneyBillAlt color={payment === "Money" ? "#05A0F8" : null} onClick={() => setPayment("Money")}/>
+              <BsFillCreditCardFill color={payment === "Credit card" ? "#05A0F8" : null} onClick={() => setPayment("Credit card")}/>
+            </div>
+        </Payment>
         <Total>
           <p>Total: </p>
           <p>R$ {parseFloat(total).toFixed(2)}</p>
         </Total>
-        {productInfo.length > 0 ? <button onClick={() => navigate("/checkout")}>Finalizar Compra</button> : <button disabled  onClick={() => navigate("/checkout")}>Adicione Produtos!</button>}
+        {productInfo.length <= 0  ? <button disabled>Adicione Produtos!</button> 
+        : payment !== "" ? <button onClick={() => {
+          const paymentObject = JSON.stringify({total: total, payment: payment})
+          localStorage.setItem("payment", paymentObject)
+          navigate("/checkout")
+        }}>Finalizar Compra</button>
+        : <button disabled >Escolha a forma de pagamento</button>}
       </Checkout>
     </CartDiv>
   )
@@ -150,7 +167,7 @@ const Title = styled.h1`
 `
 
 const ProductList = styled.div`
-  padding-bottom: 25%;
+  padding-bottom: 45%;
 `
 
 const Product = styled.div`
@@ -262,7 +279,25 @@ const Checkout = styled.div`
    background-color: #05A0F8;
    color: #ffffff;
    border: 0;
-   font-size: 20px;
+   font-size: 18px;
    font-weight: 700;
+  }
+`
+
+const Payment = styled.div`
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
+  margin-top: 10px;
+  font-size: 23px;
+  text-align: center;
+  font-weight: 700;
+  
+  div{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
   }
 `
