@@ -11,7 +11,6 @@ export default function Checkout() {
   const userDataLocalStorage = localStorage.getItem("userData")
   const unserializedData = JSON.parse(userDataLocalStorage)
   const tokenStorage = unserializedData.token
-  console.log(paymentData)
   useEffect(() => {
     axios
     .post("http://localhost:5000/checkout" , paymentData,{
