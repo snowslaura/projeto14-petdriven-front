@@ -90,9 +90,8 @@ function Home() {
                       image={image}
                     />
                   </Link>
-                );
+                )
               })}
-          ;
         </DivProducts>
       </Main>
       <Footer />
@@ -106,7 +105,7 @@ export const Main = styled.main`
   width: 375px;
   height: 810px;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 80px;
 `;
 
 export const DivNav = styled.div`
@@ -208,5 +207,5 @@ export const DivProducts = styled.div`
   flex-wrap: wrap;
   text-decoration: none;
   margin-left: 7px;
-  margin-bottom: 70px;
+  padding-bottom: 80px;
 `;
