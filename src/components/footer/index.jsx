@@ -14,7 +14,7 @@ function Footer() {
         Authorization: `Bearer ${tokenStorage}`,
       },
     };
-    const URL = "http://localhost:5000/home";
+    const URL = `${process.env.REACT_APP_API_URL}/home`;
     const body = {};
     const promise = axios.put(URL, body, config);
     promise.then(() => {
