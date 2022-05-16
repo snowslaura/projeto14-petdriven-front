@@ -23,6 +23,7 @@ export default function Cart() {
   const tokenStorage = unserializedData.token
 
   useEffect(() =>{
+    setTimeout(() => {
     setUpdate(true)
     if(update){
     axios
@@ -32,14 +33,15 @@ export default function Cart() {
       }
     })
     .then(response => {
+      console.log(response.data)
       if(response.length === 0) return
       setProducts(() => response.data)
     })
     .catch((e) => {
       console.log(e)
     })
-    setUpdate(true)
   }
+},10)
   },[update, tokenStorage])
 
   useEffect(() => {
@@ -125,14 +127,22 @@ export default function Cart() {
   )
 
   function DeleteProduct(id){
-    axios.delete(`http://localhost:5000/cart/${id}`)
+    axios.put(`http://localhost:5000/cart/${id}`,{},{
+      headers: {
+        Authorization: `Bearer ${tokenStorage}`
+      }
+    })
     setProductInfo(() => [])
     setUpdate(() => false)
     setLoading(() => true)
   }
 
   function AddProduct(id){
-    axios.post(`http://localhost:5000/cart/${id}`,)
+    axios.post(`http://localhost:5000/cart/${id}`,{},{
+      headers: {
+        Authorization: `Bearer ${tokenStorage}`
+      }
+    })
     setProductInfo(() => [])
     setUpdate(() => false)
     setLoading(() => true)
