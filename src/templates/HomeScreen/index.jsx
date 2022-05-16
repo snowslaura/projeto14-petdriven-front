@@ -98,7 +98,7 @@ function Home() {
                       image={image}
                     />
                   </Link>
-                );
+                )
               })}
         </DivProducts>
       </Main>
@@ -113,7 +113,7 @@ export const Main = styled.main`
   width: 375px;
   height: 810px;
   margin-top: 70px;
-  margin-bottom: 70px;
+  margin-bottom: 80px;
 `;
 
 export const DivNav = styled.div`
@@ -140,6 +140,9 @@ export const DivFilter = styled.div`
   img {
     width: 45px;
     height: 45px;
+  }
+  img:hover {
+    cursor: pointer;
   }
 `;
 
@@ -206,6 +209,9 @@ export const DivGuide = styled.div`
     color: #989898;
     margin-right: 15px;
   }
+  p:hover {
+    cursor: pointer;
+  }
 `;
 
 export const DivProducts = styled.div`
@@ -215,5 +221,5 @@ export const DivProducts = styled.div`
   flex-wrap: wrap;
   text-decoration: none;
   margin-left: 7px;
-  margin-bottom: 70px;
+  padding-bottom: 80px;
 `;

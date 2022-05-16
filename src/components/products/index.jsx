@@ -30,6 +30,11 @@ const Box = styled.div`
   margin: 10px 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
+  padding: 3px 3px;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.div`
@@ -53,7 +58,7 @@ const Legenda = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  margin: 0px 10px;
+  margin: 0px 6px;
   margin-top: 5px;
 
   h1 {
@@ -62,15 +67,10 @@ const Legenda = styled.div`
     font-style: normal;
     line-height: 14.73px;
     color: #000000;
-    text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: 8px;
     margin-left: 3px;
-  }
-
-  h1:hover {
-    overflow: visible;
   }
 `;
 
@@ -89,6 +89,5 @@ const Price = styled.div`
     line-height: 12.73px;
     color: #05a0f8;
     margin-right: 32px;
-    text-decoration: none;
   }
 `;
