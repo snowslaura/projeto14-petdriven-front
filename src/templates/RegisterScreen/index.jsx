@@ -41,7 +41,6 @@ function Register(){
         })
         promise.catch((e) => {
             const message = e.response.data
-            setUserData({...userData,name:"", email:"", password:"", confirmation:""});
             setIsLoading(false)
             alert(`Dados inválidos: ${message}`);
         })
