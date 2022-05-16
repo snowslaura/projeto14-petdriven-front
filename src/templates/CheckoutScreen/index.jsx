@@ -6,18 +6,19 @@ import { useNavigate } from "react-router-dom"
 
 export default function Checkout() {
   const navigate = useNavigate()
+  const paymentLocalStorage = localStorage.getItem("payment")
+  const paymentData = JSON.parse(paymentLocalStorage)
   const userDataLocalStorage = localStorage.getItem("userData")
   const unserializedData = JSON.parse(userDataLocalStorage)
   const tokenStorage = unserializedData.token
-
   useEffect(() => {
     axios
-    .delete("http://localhost:5000/checkout",{
+    .post("http://localhost:5000/checkout" , paymentData,{
         headers: {
           Authorization: `Bearer ${tokenStorage}`
         }
       })
-  },[tokenStorage])
+  },[tokenStorage, paymentData])
 
   return (
     <>

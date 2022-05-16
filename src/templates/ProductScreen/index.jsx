@@ -16,7 +16,7 @@ function Product(){
     const unserializedData = JSON.parse(userDataLocalStorage)
     const tokenStorage = unserializedData.token
     
-    useEffect( fetchProduct, [])
+    useEffect( fetchProduct, [tokenStorage,id])
 
     const navigate = useNavigate();
 
