@@ -33,7 +33,7 @@ function Login(){
             password:userData.password,
         }
 
-        const promise = axios.post(`http://localhost:5000/`, body)
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/`, body)
         promise.then(({data})=>{
             setUserData({...userData, email:"", password:""});  
             const serializedDataString = JSON.stringify({token: data.token, name:data.name})            

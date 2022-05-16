@@ -27,7 +27,7 @@ function Product(){
             }
         }
     
-        const promise = axios.get(`http://localhost:5000/product/${id}`, config)
+        const promise = axios.get(`${process.env.REACT_APP_API_URL}/product/${id}`, config)
         promise.then(({data})=>{
             setPromotion(data.promotion)
             setProduct(data)
@@ -44,7 +44,7 @@ function Product(){
             }
         }       
 
-        const promise = axios.post(`http://localhost:5000/product/${id}`,{}, config)
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/product/${id}`,{}, config)
         promise.then(({data})=>{
             navigate("/mycart")
         })

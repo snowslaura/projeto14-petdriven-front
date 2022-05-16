@@ -22,7 +22,7 @@ function Home() {
   const tokenStorage = unserializedData.token
 
   useEffect(() => {
-    const promise = axios.get("http://localhost:5000/home",{
+    const promise = axios.get(`${process.env.REACT_APP_API_URL}/home`,{
       headers: {
         Authorization: `Bearer ${tokenStorage}`
       }

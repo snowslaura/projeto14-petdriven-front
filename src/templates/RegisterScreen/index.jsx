@@ -37,7 +37,7 @@ function Register(){
             confirmation:userData.confirmation
         }
 
-        const promise = axios.post(`http://localhost:5000/sign-up`, body)
+        const promise = axios.post(`${process.env.REACT_APP_API_URL}/sign-up`, body)
         promise.then((response)=>{
             setUserData({...userData,name:"", email:"", password:"", confirmation:""});
             navigate("/");

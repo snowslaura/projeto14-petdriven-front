@@ -13,7 +13,7 @@ export default function Checkout() {
   const tokenStorage = unserializedData.token
   useEffect(() => {
     axios
-    .post("http://localhost:5000/checkout" , paymentData,{
+    .post(`${process.env.REACT_APP_API_URL}/checkout`, paymentData,{
         headers: {
           Authorization: `Bearer ${tokenStorage}`
         }

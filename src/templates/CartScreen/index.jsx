@@ -27,7 +27,7 @@ export default function Cart() {
     setUpdate(true)
     if(update){
     axios
-    .get("http://localhost:5000/cart",{
+    .get(`${process.env.REACT_APP_API_URL}/cart`,{
       headers: {
         Authorization: `Bearer ${tokenStorage}`
       }
@@ -47,7 +47,7 @@ export default function Cart() {
   useEffect(() => {
     if(products.length === 0) return
     for(let product of products){
-      const promise = axios.get(`http://localhost:5000/product/${product.idProduct}`,{
+      const promise = axios.get(`${process.env.REACT_APP_API_URL}/product/${product.idProduct}`,{
         headers: {
           Authorization: `Bearer ${tokenStorage}`
         }
@@ -127,7 +127,7 @@ export default function Cart() {
   )
 
   function DeleteProduct(id){
-    axios.put(`http://localhost:5000/cart/${id}`,{},{
+    axios.put(`${process.env.REACT_APP_API_URL}/cart/${id}`,{},{
       headers: {
         Authorization: `Bearer ${tokenStorage}`
       }
@@ -138,7 +138,7 @@ export default function Cart() {
   }
 
   function AddProduct(id){
-    axios.post(`http://localhost:5000/cart/${id}`,{},{
+    axios.post(`${process.env.REACT_APP_API_URL}/cart/${id}`,{},{
       headers: {
         Authorization: `Bearer ${tokenStorage}`
       }
