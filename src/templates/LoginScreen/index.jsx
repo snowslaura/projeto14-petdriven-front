@@ -6,16 +6,21 @@ import email from "./../../assets/img/email.png"
 import padlock from "./../../assets/img/padlock.png"
 import pawprint from "./../../assets/img/pawprint.svg"
 import {Oval} from 'react-loader-spinner';
+import Modal from "./../../components/modal/index.jsx"
 
 import UsuarioContext from "./../../contexts/UserContext";
 import isLoadingContext from "./../../contexts/isLoadingContext"
+import isModalOpenContext from "../../contexts/IsModalOpenContext";
+import ErrorMessageContext from "../../contexts/ErrorMessageContext";
 
 function Login(){
   
     const{userData, setUserData} = useContext(UsuarioContext)
     const {isLoading, setIsLoading} = useContext(isLoadingContext)
+    const {isModalOpen, setIsmodalOpen} = useContext(isModalOpenContext)
+    const {errorMessage, setErrorMessage} = useContext(ErrorMessageContext)
 
-    const[showTip, setShowTip]= useState(false);
+    const[showTip, setShowTip]= useState(false);    
 
     const navigate = useNavigate();
 
@@ -33,7 +38,6 @@ function Login(){
             setUserData({...userData, email:"", password:""});  
             const serializedDataString = JSON.stringify({token: data.token, name:data.name})            
             localStorage.setItem("userData", serializedDataString)          
-            alert("Login efetuado com sucesso!");
             navigate("/home");
             setIsLoading(false)
         })
@@ -42,7 +46,8 @@ function Login(){
             const message = e.response.data
             setUserData({...userData,email:"", password:""});
             setIsLoading(false)
-            alert(`Dados inválidos: ${message}`);
+            setIsmodalOpen(true)
+            setErrorMessage(message)            
         })
     }
 
@@ -55,31 +60,36 @@ function Login(){
         <Logo>Petdriven</Logo>
         <InitialMessage>Digite seu e-mail e senha para entrar!</InitialMessage>
         {isLoading?
-        <form onSubmit={handleSubmit}>
-            <InputIcone isLoading>
-                <img src={email} alt="user-icon"></img>
-                <input type="email" id="email" placeholder="E-mail" disabled  value={userData.email} onChange={(e)=> setUserData({...userData, email:e.target.value})}/>
-            </InputIcone>
-            <InputIcone isLoading>
-                <img src={padlock} alt="user-icon"></img>
-                <input type="password" id="password" placeholder="Senha" disabled value={userData.password} onChange={(e)=> setUserData({...userData, password:e.target.value})} />
-            </InputIcone>
-            <button type="submit" disabled> <Oval height="30" width="30" color='#FFAD32' disabled ariaLabel='loading'/></button>
-        </form>:        
-        <form onSubmit={handleSubmit}>
-            <InputIcone>
-                <img src={email} alt="user-icon"></img>
-                <input type="email" id="email" placeholder="E-mail"  value={userData.email} onChange={(e)=> setUserData({...userData, email:e.target.value})}/>
-            </InputIcone>
-            <InputIcone>
-                <img src={padlock} alt="user-icon"></img>
-                <input onClick={showTipBelow} type="password" id="password" placeholder="Senha*"  value={userData.password} onChange={(e)=> setUserData({...userData, password:e.target.value})} />
-            </InputIcone>
-            {!showTip?"":
-                <Warn><span>*Deve ser alfanumérica e deve conter</span> <span> no mínimo 6 dígitos e no máximo 12</span></Warn>}
+        <>
+            <form onSubmit={handleSubmit}>
+                <InputIcone isLoading>
+                    <img src={email} alt="user-icon"></img>
+                    <input type="email" id="email" placeholder="E-mail" disabled  value={userData.email} onChange={(e)=> setUserData({...userData, email:e.target.value})}/>
+                </InputIcone>
+                <InputIcone isLoading>
+                    <img src={padlock} alt="user-icon"></img>
+                    <input type="password" id="password" placeholder="Senha" disabled value={userData.password} onChange={(e)=> setUserData({...userData, password:e.target.value})} />
+                </InputIcone>
+                <button type="submit" disabled> <Oval height="30" width="30" color='#FFAD32' disabled ariaLabel='loading'/></button>
+            </form>            
+        </>:
+        <>        
+            <form onSubmit={handleSubmit}>
+                <InputIcone>
+                    <img src={email} alt="user-icon"></img>
+                    <input type="email" id="email" placeholder="E-mail"  value={userData.email} onChange={(e)=> setUserData({...userData, email:e.target.value})}/>
+                </InputIcone>
+                <InputIcone>
+                    <img src={padlock} alt="user-icon"></img>
+                    <input onClick={showTipBelow} type="password" id="password" placeholder="Senha*"  value={userData.password} onChange={(e)=> setUserData({...userData, password:e.target.value})} />
+                </InputIcone>
+                {!showTip?"":
+                    <Warn><span>*Deve ser alfanumérica e deve conter</span> <span> no mínimo 6 dígitos e no máximo 12</span></Warn>}
 
-            <button type="submit">Entrar</button>  
-        </form> } 
+                <button type="submit">Entrar</button>  
+            </form>
+            {isModalOpen?<Modal setIsmodalOpen={setIsmodalOpen} errorMessage={errorMessage}/>:null}
+        </>} 
         <Link to="/sign-up"><Enter>Não tem uma conta? Registre-se aqui!</Enter></Link>         
     </Container>
 

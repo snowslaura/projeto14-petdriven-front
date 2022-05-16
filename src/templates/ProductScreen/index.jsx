@@ -46,7 +46,6 @@ function Product(){
 
         const promise = axios.post(`http://localhost:5000/product/${id}`,{}, config)
         promise.then(({data})=>{
-            alert(`${data}`)
             navigate("/mycart")
         })
         promise.catch((e)=>{
@@ -63,7 +62,7 @@ function Product(){
     return(
         <Container>
             <Header>
-                <IoChevronBack onClick={leavePage}/>
+                <div><IoChevronBack onClick={leavePage}/></div>
                 {promotion?
                 <Tippy content="Esse produto está em promoção. Aproveite!" >
                      <Promotion><BsPiggyBank/></Promotion>
@@ -92,11 +91,12 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;  
-    margin-top: 150px;  
+    width: 100%;
+    height: 100%;
 
     img{
-        height: 70%;
-        width: 70%;
+        margin-top: 150px;
+        width: 250px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
         border-radius: 10px;
     }
@@ -115,9 +115,13 @@ const Header = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;       
-    color:#FFAD32;
+    color:#015584;
     font-size: 40px;
     padding: 20px;
+
+    div{
+        cursor: pointer;  
+    }
 ` 
     
 const Footer = styled.footer`
@@ -131,6 +135,8 @@ const Footer = styled.footer`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    font-weight: 700;
+    
 
     div{
         height: 30px;
@@ -161,23 +167,26 @@ const Footer = styled.footer`
 `
 
 const Name = styled.p`
-   font-size:20px;
-    color:  #015584; 
+    font-size:20px;
+    color: #ffffff;
     width:90%;
     height: 70%;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;  
+    text-overflow: ellipsis;
+    font-weight: 700; 
 `
 
 const Price = styled.p`
     font-size:20px;
-    color: #015584;  
+    font-weight: 700; 
+    color: #ffffff; 
 `
 
 const Description = styled.p`
     font-size:15px;
-    color: #015584;  
+    font-weight: 700; 
+    color: #ffffff; 
     width: 80%;
     height: 80px;
     overflow-y: scroll;

@@ -7,17 +7,23 @@ import email from "./../../assets/img/email.png"
 import padlock from "./../../assets/img/padlock.png"
 import pawprint from "./../../assets/img/pawprint.svg"
 import {Oval} from 'react-loader-spinner';
+import Modal from "../../components/modal";
 
 import UsuarioContext from "./../../contexts/UserContext";
-import isLoadingContext from "./../../contexts/isLoadingContext"
+import isLoadingContext from "./../../contexts/isLoadingContext";
+import isModalOpenContext from "../../contexts/IsModalOpenContext";
+import ErrorMessageContext from "../../contexts/ErrorMessageContext";
+
 
 function Register(){
 
     const{userData, setUserData} = useContext(UsuarioContext)
     const {isLoading, setIsLoading} = useContext(isLoadingContext)
+    const {isModalOpen, setIsmodalOpen} = useContext(isModalOpenContext)
+    const {errorMessage, setErrorMessage} = useContext(ErrorMessageContext)
 
     const[showTip, setShowTip]= useState(false);
-
+    
     const navigate = useNavigate();
 
     function handleSubmit(event){
@@ -34,16 +40,18 @@ function Register(){
         const promise = axios.post(`http://localhost:5000/sign-up`, body)
         promise.then((response)=>{
             setUserData({...userData,name:"", email:"", password:"", confirmation:""});
-            alert("Registro efetuado com sucesso");
             navigate("/");
             setIsLoading(false)
+            setErrorMessage("Registro efetuado com sucesso")
+            setIsmodalOpen(true)
 
         })
         promise.catch((e) => {
             const message = e.response.data
-            setUserData({...userData,name:"", email:"", password:"", confirmation:""});
             setIsLoading(false)
-            alert(`Dados inválidos: ${message}`);
+            setErrorMessage(message)
+            setIsmodalOpen(true)
+            
         })
     }
 
@@ -97,6 +105,7 @@ function Register(){
 
             <button type="submit">Registrar</button>  
         </form> } 
+        {isModalOpen?<Modal setIsmodalOpen={setIsmodalOpen} errorMessage={errorMessage}/>:null}
         <Link to="/"><Enter>Já tem uma conta? Entre agora!</Enter></Link>         
     </Container>
 
