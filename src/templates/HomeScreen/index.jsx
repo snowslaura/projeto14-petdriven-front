@@ -133,6 +133,9 @@ export const DivFilter = styled.div`
     width: 45px;
     height: 45px;
   }
+  img:hover {
+    cursor: pointer;
+  }
 `;
 
 export const DivGuideNav = styled.div`
@@ -197,6 +200,9 @@ export const DivGuide = styled.div`
     line-height: 12.73px;
     color: #989898;
     margin-right: 15px;
+  }
+  p:hover {
+    cursor: pointer;
   }
 `;
 

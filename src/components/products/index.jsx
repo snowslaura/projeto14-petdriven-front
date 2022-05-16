@@ -31,6 +31,10 @@ const Box = styled.div`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   padding: 3px 3px;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.div`
