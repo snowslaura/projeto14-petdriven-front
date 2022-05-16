@@ -17,8 +17,16 @@ function Home() {
   const [filtro, setFiltro] = useState([]);
   const [etapa, setEtapa] = useState("");
 
+  const userDataLocalStorage = localStorage.getItem("userData")
+  const unserializedData = JSON.parse(userDataLocalStorage)
+  const tokenStorage = unserializedData.token
+
   useEffect(() => {
-    const promise = axios.get("http://localhost:5000/home");
+    const promise = axios.get("http://localhost:5000/home",{
+      headers: {
+        Authorization: `Bearer ${tokenStorage}`
+      }
+    });
 
     promise.then((response) => {
       const { data } = response;
@@ -67,9 +75,9 @@ function Home() {
         <DivProducts>
           {etapa === ""
             ? products.map((product) => {
-                const { id, name, price, type, image } = product;
+                const { _id, name, price, type, image } = product;
                 return (
-                  <Link to={`/product/${id}`} key={id + name}>
+                  <Link to={`/product/${_id}`} key={_id + name}>
                     <Product
                       name={name}
                       price={price}
@@ -80,9 +88,9 @@ function Home() {
                 );
               })
             : filtro.map((product) => {
-                const { id, name, price, type, image } = product;
+                const { _id, name, price, type, image } = product;
                 return (
-                  <Link to={`/product/${id}`} key={id + name}>
+                  <Link to={`/product/${_id}`} key={_id + name}>
                     <Product
                       name={name}
                       price={price}
@@ -92,7 +100,6 @@ function Home() {
                   </Link>
                 );
               })}
-          ;
         </DivProducts>
       </Main>
       <Footer />

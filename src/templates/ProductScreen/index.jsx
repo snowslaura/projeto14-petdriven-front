@@ -12,18 +12,18 @@ function Product(){
     const [product, setProduct] = useState({})
     const [promotion, setPromotion] = useState(false)
 
-    //const userDataLocalStorage = localStorage.getItem("userData")
-    //const unserializedData = JSON.parse(userDataLocalStorage)
-    //const tokenStorage = unserializedData.token
+    const userDataLocalStorage = localStorage.getItem("userData")
+    const unserializedData = JSON.parse(userDataLocalStorage)
+    const tokenStorage = unserializedData.token
     
-    useEffect( fetchProduct, [])
+    useEffect( fetchProduct, [tokenStorage,id])
 
     const navigate = useNavigate();
 
     function fetchProduct(){
         const config = {
             headers: {
-                "Authorization": `Bearer 60e7b053-147f-4773-921e-8ee5d46e4f4f`
+                "Authorization": `Bearer ${tokenStorage}`
             }
         }
     
@@ -40,12 +40,12 @@ function Product(){
     function postProductCart(){
         const config = {
             headers: {
-                "Authorization": `Bearer 60e7b053-147f-4773-921e-8ee5d46e4f4f`
+                "Authorization": `Bearer ${tokenStorage}`
             }
         }
        
 
-        const promise = axios.post(`http://localhost:5000/product/${id}`, config)
+        const promise = axios.post(`http://localhost:5000/product/${id}`, {},config)
         promise.then(({data})=>{
             alert(`${data}`)
             navigate("/mycart")
